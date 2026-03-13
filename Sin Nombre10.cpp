@@ -1,0 +1,300 @@
+#include <iostream>
+#include <vector> //Libreria de vectores
+using namespace std;
+
+//Clase Estudiante
+class Estudiante {
+public:
+    int id; 
+    string nombre;
+    string carrera;
+    float nota;
+};
+
+//Vector que almacena a todos los estudiantes
+vector<Estudiante> lista;
+
+//Funciones del programa
+//Registrar estudiante
+void registrar() {
+    Estudiante e; //Crear objetos del tipo estudiante
+    cout << "ID: ";
+	cin >> e.id;
+    cout << "Nombre: ";
+	cin >> e.nombre;
+    cout << "Carrera: ";
+	cin >> e.carrera;
+    cout << "Nota: ";
+    cin >> e.nota;
+
+//Validar que la nota del estudiante este entre 0 y 10
+    while(e.nota < 0 || e.nota > 10) {
+        cout << "Error en la nota que se quiere registrar. Ingrese una nota entre 0 y 10: ";
+        cin >> e.nota;
+    }
+
+    lista.push_back(e); //Agrega al estudiante al vector
+    cout << "Estudiante registrado." << endl;
+}
+
+//Mostrar estudiantes
+void mostrar() {
+
+    if(lista.empty()) { //Verifica si el vector eata vacio
+        cout << "No hay estudiantes en el registro." << endl;
+        return;
+    }
+
+    cout << endl;
+    cout << "Lista de Estudiantes" << endl;
+
+//Recorre el vector y muestra en pantalla a todos los estudiantes registrados
+    for(int i = 0; i < lista.size(); i++) {
+        cout << i+1 << "| ID: " << lista[i].id
+             << "| Nombre: " << lista[i].nombre
+             << "| Carrera: " << lista[i].carrera
+             << "| Nota: " << lista[i].nota << endl;
+    }
+
+}
+
+//Buscar estudiante
+void buscar() {
+    int id;
+    char repetir;
+
+    do {
+        cout << "ID que se quiere buscar: ";
+		cin >> id;
+        bool encontrado = false;
+
+//Recorre el vector para encontrar al estudiante por su ID
+        for(int i = 0; i < lista.size(); i++) {
+            if(lista[i].id == id) {
+
+                cout << endl;
+                cout << "Estudiante encontrado" << endl;
+                cout << "Nombre: " << lista[i].nombre << endl;
+                cout << "Carrera: " << lista[i].carrera << endl;
+                cout << "Nota: " << lista[i].nota << endl;
+                encontrado = true;
+                break; //Salir del bucle cuando se encuentre el ID buscado
+            }
+        }
+
+//Funcion que intenta encontrar nuevamente el ID del estudiante, esto solo si se metieron mal los datos a buscar
+        if(!encontrado) {
+            cout << "Estudiante no encontrado." << endl;
+            cout << "Desea volver a intentar? (s/n): ";
+            cin >> repetir;
+        } else {
+            repetir = 'n';
+        }
+
+    } while(repetir == 's' || repetir == 'S');
+}
+
+//Modificar datos 
+void modificar() {
+    int id;
+    char repetir;
+
+    do {
+        cout << "ID que quiere modificar: ";
+		cin >> id;
+        bool encontrado = false;
+
+        for(int i = 0; i < lista.size(); i++) {
+
+            if(lista[i].id == id) {
+            	
+            	//Se pide los nuevos datos del estudiante
+                cout << "Nuevo nombre: ";
+                cin >> lista[i].nombre;
+                cout << "Nueva carrera: ";
+                cin >> lista[i].carrera;
+                cout << "Nueva nota: ";
+                cin >> lista[i].nota;
+
+//Validar que la nota del estudiante se encuentre en un rango de 0 a 10
+                while(lista[i].nota < 0 || lista[i].nota > 10) {
+                    cout << "Error en la nota que quiere registar. Ingrese una nota entre 0 y 10: ";
+                    cin >> lista[i].nota;
+                }
+
+                cout << "Datos modificados." << endl;
+                encontrado = true;
+                break;
+            }
+        }
+
+//Funcion para intentar encontrar nuevamente el ID del estudiante, esto solo si se metieron mal los datos a buscar
+        if(!encontrado) {
+            cout << "Estudiante no encontrado." << endl;
+            cout << "Desea volver a intentar? (s/n): ";
+            cin >> repetir;
+        } else {
+            repetir = 'n';
+        }
+
+    } while(repetir == 's' || repetir == 'S');
+}
+
+//Eliminar estudiante
+void eliminar() {
+    int id;
+    cout << "ID que quiere eliminar: ";
+	cin >> id;
+
+    for(int i = 0; i < lista.size(); i++) {
+
+        if(lista[i].id == id) {
+            lista.erase(lista.begin() + i); //Eliminar el registro del estudiante del vector
+            cout << "Registro eliminado." << endl;
+            return;
+        }
+    }
+
+    cout << "Estudiante no encontrado." << endl;
+}
+
+//Reporte final
+void reporte() {
+
+    if(lista.size() == 0) {
+        cout << "No hay estudiantes registrados." << endl;
+        return;
+    }
+
+    float suma = 0;
+    float mayor = lista[0].nota;
+    float menor = lista[0].nota;
+
+//Calcular el promedio general del curso, la nota mayor y la nota menor
+    for(int i = 0; i < lista.size(); i++) {
+
+        suma += lista[i].nota;
+
+        if(lista[i].nota > mayor) {
+            mayor = lista[i].nota;
+        }
+
+        if(lista[i].nota < menor) {
+            menor = lista[i].nota;
+        }
+    }
+
+    cout << endl;
+    cout << " Reporte " << endl;
+    cout << "Numero total de estudiantes registrados: " << lista.size() << endl;
+    cout << "Promedio general del curso: " << suma / lista.size() << endl;
+    cout << "Nota mas alta: " << mayor << endl;
+    cout << "Nota mas baja: " << menor << endl;
+
+}
+
+//Diez registros iniciales
+void datosIniciales() {
+
+    Estudiante e;
+
+    e.id = 1;
+	e.nombre = "Daniela";
+	e.carrera = "Software";
+	e.nota = 8.5;
+	lista.push_back(e);
+    e.id = 2;
+	e.nombre = "Luis";
+	e.carrera = "Software";
+	e.nota = 7.0;
+	lista.push_back(e);
+    e.id = 3;
+	e.nombre = "Diego";
+	e.carrera = "Software";
+	e.nota = 9.3;
+	lista.push_back(e);
+    e.id = 4;
+	e.nombre = "Samantha";
+	e.carrera = "Software";
+	e.nota = 7.2;
+	lista.push_back(e);
+    e.id = 5;
+	e.nombre = "Alejandro";
+	e.carrera = "Software";
+	e.nota = 6.1;
+	lista.push_back(e);
+    e.id = 6;
+	e.nombre = "Matheo";
+	e.carrera = "Software";
+	e.nota = 5.8;
+	lista.push_back(e);
+    e.id = 7;
+	e.nombre = "Genesis";
+	e.carrera = "Software";
+	e.nota = 8.0;
+	lista.push_back(e);
+    e.id = 8;
+	e.nombre = "Justin";
+	e.carrera = "Software"; 
+	e.nota = 5.0; 
+	lista.push_back(e);
+    e.id = 9;
+	e.nombre = "Pablo";
+	e.carrera = "Software";
+	e.nota = 7.0;
+	lista.push_back(e);
+    e.id = 10;
+	e.nombre = "Josselyn";
+	e.carrera = "Software";
+	e.nota = 8.8;
+	lista.push_back(e);
+}
+
+//Menu interactivo
+int main() {
+
+    datosIniciales(); //Se cargan los 10 registros iniciales
+
+    int opcion;
+
+    do {
+
+//Se muestra el menu
+        cout << endl;
+        cout << " Menu" << endl;
+        cout << "1. Registrar" << endl;
+        cout << "2. Mostrar" << endl;
+        cout << "3. Buscar" << endl;
+        cout << "4. Modificar" << endl;
+        cout << "5. Eliminar" << endl;
+        cout << "6. Reporte" << endl;
+        cout << "7. Salir" << endl;
+        cout << "Opcion: ";
+        cin >> opcion;
+
+//Elegir una opcion para que se ejecute la funcion deseada
+        switch(opcion) {
+
+            case 1: registrar();
+			break;
+            case 2: mostrar();
+			break;
+            case 3: buscar();
+			break;
+            case 4: modificar();
+			break;
+            case 5: eliminar();
+			break;
+            case 6: reporte();
+			break;
+
+//Se ejecuta un default si la opcion ingresada no coincide con ninguna de las opciones del menu
+            default:
+                if(opcion != 7)
+                cout << "No se encuentra el numero de su opcion, intente de nuevo." << endl; //Mensaje que indica que la opcion no existe
+        }
+
+    } while(opcion != 7); //Repetir el ciclo hasta que el usuario elija la opcion 7 (salir)
+
+    return 0;
+}
